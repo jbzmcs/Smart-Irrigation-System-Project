@@ -1,0 +1,5 @@
+#Ignore object and build files
+*.o
+*.elf
+*.hex
+
