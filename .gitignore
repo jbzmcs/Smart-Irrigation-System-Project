@@ -2,4 +2,7 @@
 *.o
 *.elf
 *.hex
-
+*.map
+*.bin
+*.out
+*.a
