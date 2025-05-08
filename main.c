@@ -12,8 +12,8 @@
 #include "relay.h"
 #include "timer.h"
 
-// Thresholds for moisture levels
-#define DRY_THRESHOLD 600
+// Threshold for moisture level (adjust based on your sensor behavior)
+#define DRY_THRESHOLD     600
 #define WATERING_DURATION 5000  // Duration in ms to water when soil is dry
 
 // Global variables - visible to other modules
@@ -43,37 +43,38 @@ int main(void) {
     while (1) {
         if (check_moisture_flag) {
             check_moisture_flag = 0;
-            
+
             // Get moisture reading
             uint16_t moisture = ADC_getLastReading();
-            
+
             // Send moisture data to serial
             UART_sendString("Soil Moisture Value: ");
             UART_sendInt(moisture);
-            
+
+            // Debug: Indicate logic check is running
+            UART_sendString(" | Checking moisture level...");
+
             // Check if soil is dry and take appropriate action
-            if (moisture < DRY_THRESHOLD) {
+            if (moisture > DRY_THRESHOLD) {
                 UART_sendString(" | Status: DRY - Pump ON\r\n");
-                
+
                 // Activate irrigation
                 Relay_on();
-                
+
                 // Water for the specified duration
                 _delay_ms(WATERING_DURATION);
-                
+
                 // Turn off irrigation
                 Relay_off();
-                
+
                 UART_sendString("Watering complete\r\n");
-            } else {
+            } else{
                 UART_sendString(" | Status: MOIST/WET - Pump OFF\r\n");
                 // Ensure relay is off
                 Relay_off();
             }
         }
     }
-    
+
     return 0;
 }
-
-// The ISRs are moved to their respective module files
