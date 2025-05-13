@@ -15,6 +15,9 @@
 // Threshold for moisture level (adjust based on your sensor behavior)
 #define DRY_THRESHOLD     600
 #define WATERING_DURATION 5000  // Duration in ms to water when soil is dry
+#define AIR_THRESHOLD 950    
+#define AIR_DETECTION_COUNT 3
+uint8_t air_counter = 0;
 
 // Global variables - visible to other modules
 volatile uint8_t check_moisture_flag = 0;
@@ -54,8 +57,18 @@ int main(void) {
             // Debug: Indicate logic check is running
             UART_sendString(" | Checking moisture level...");
 
-            // Check if soil is dry and take appropriate action
-            if (moisture > DRY_THRESHOLD) {
+            if (moisture > AIR_THRESHOLD) { //Checks if the sensor is on air
+                air_counter++;
+                if (air_counter >= AIR_DETECTION_COUNT) {
+                    UART_sendString(" | Status: POSSIBLY IN AIR - Pump OFF\r\n");
+                    Relay_off(); // Prevent watering if sensor likely in air
+                    continue;    // Skip further checks
+                }
+            } else {
+                air_counter = 0; // Reset if reading drops below air threshold
+            }
+
+           if(moisture > DRY_THRESHOLD) {// Check if soil is dry and take appropriate action
                 UART_sendString(" | Status: DRY - Pump ON\r\n");
 
                 // Activate irrigation
