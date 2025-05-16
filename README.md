@@ -2,7 +2,7 @@
 
 ## Description
 
-This project implements a **Smart Irrigation System** on the **ATmega328P microcontroller** using **AVR programming in C**. The system automatically monitors soil moisture using an analog sensor and controls a water pump through a relay module. Key features include:
+This project implements a **Smart Irrigation System** on the **ATmega328P microcontroller** using **AVR programming in C** — meaning no Arduino libraries or frameworks are used, solely bare-metal. The system automatically monitors soil moisture using an analog sensor and controls a water pump through a relay module. Key features include:
 
 * **Analog-to-Digital Conversion (ADC)** to read soil moisture levels.
 * **Timer1 with interrupts** for periodic sensor reading (every 1 second).
@@ -26,7 +26,7 @@ This system is designed to be energy-efficient, cost-effective, and a great intr
 * Relay module
 * Water pump (DC, compatible with relay)
 * Breadboard and jumper wires
-* Power supply (USB or external 5V/12V as required)
+* Battery (Power Supply)
 
 ### 🔌 Wiring Overview
 
